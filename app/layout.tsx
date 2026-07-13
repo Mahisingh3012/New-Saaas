@@ -1,0 +1,41 @@
+import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
+import { shadcn } from "@clerk/ui/themes";
+import { Bricolage_Grotesque, Geist } from "next/font/google";
+import "./globals.css";
+import { cn } from "@/lib/utils";
+import Navbar from "@/components/navbar";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Converso",
+  description: "Real-time AI Teaching Platform",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className={cn("font-sans", geist.variable)}>
+      <body className={`${bricolage.variable} antialiased`}>
+        <ClerkProvider
+          appearance={{ theme: shadcn }}
+          signInUrl="/sign-in"
+          signUpUrl="/sign-up"
+          afterSignOutUrl="/"
+        >
+          <Navbar />
+          {children}
+        </ClerkProvider>
+      </body>
+    </html>
+  );
+}
